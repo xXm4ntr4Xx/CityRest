@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,14 @@ public class CityController {
 	@GetMapping("cities/{id}")
 	public Optional<City> showCities(@PathVariable Integer id) {
 		return cityrepo.findById(id);
+	}
+
+	@PutMapping("cities/{id}")
+	public List<City> updateCity(@PathVariable Integer id, @RequestBody City city) {
+		City cityUpdate = cityrepo.findById(id).get();
+		cityUpdate.setName(city.getName());
+		cityrepo.save(cityUpdate);
+		return cityrepo.findAll();
 	}
 
 	@PostMapping(path = "cities", consumes = "application/json", produces = "application/json")
